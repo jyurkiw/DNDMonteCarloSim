@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dndmontecarlosim"
+version = "0.1.0"
+description = "Monte Carlo simulation for D&D 5e"
+requires-python = ">=3.13"
+dependencies = [
+    "dndmodels @ file:///E:/Repos/DNDModels",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-html>=3.2",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=dndmontecarlosim --cov-report=html --cov-report=term-missing"
+
+[tool.black]
+line-length = 100
+target-version = ["py313"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
