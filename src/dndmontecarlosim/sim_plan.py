@@ -1,5 +1,10 @@
 from dataclasses import dataclass
-from dndmodels import AttackActor, DefenseActor, DamageEvent, Situation, Resistance, DamageType
+from dndmodels import AttackActor
+from dndmodels import DefenseActor
+from dndmodels import DamageEvent
+from dndmodels import AttackerConstants
+from dndmodels import DefenderConstants
+from constants import SimPlanConstants
 
 
 @dataclass
@@ -13,30 +18,12 @@ class SimpleSimulationPlan(object):
 
     @staticmethod
     def from_json(parsed_json: dict):
-        attacker = AttackActor(
-            proficiency=int(parsed_json["attacker"]["proficiency"]),
-            stat_bonus=int(parsed_json["attacker"]["stat_bonus"]),
-            enchantment=int(parsed_json["attacker"]["enchantment"]),
-            situation=Situation(parsed_json["attacker"]["situation"]),
-        )
-        defender = DefenseActor(
-            armor_class=int(parsed_json["defender"]["armor_class"]),
-            resistance=Resistance(parsed_json["defender"]["resistance"]),
-            resistance_type=DamageType(parsed_json["defender"]["resistance_type"]),
-        )
-        damage = DamageEvent(
-            source_name=parsed_json["damage"]["source_name"],
-            number=int(parsed_json["damage"]["number"]),
-            sides=int(parsed_json["damage"]["sides"]),
-            bonus=int(parsed_json["damage"]["bonus"]),
-            type=DamageType(parsed_json["damage"]["type"]),
-        )
         plan = SimpleSimulationPlan(
-            name=parsed_json["name"],
-            description=parsed_json["description"],
-            attacker=attacker,
-            defender=defender,
-            damage=damage,
-            rounds=int(parsed_json["rounds"]),
+            name=parsed_json[SimPlanConstants.NAME],
+            description=parsed_json[SimPlanConstants.DESCRIPTION],
+            attacker=AttackActor.from_json(parsed_json[AttackerConstants.ATTACKER]),
+            defender=DefenseActor.from_json(parsed_json[DefenderConstants.DEFENDER]),
+            damage=DamageEvent.from_json(parsed_json[SimPlanConstants.DAMAGE]),
+            rounds=int(parsed_json[SimPlanConstants.ROUNDS]),
         )
         return plan
