@@ -7,7 +7,13 @@ from dndmodels import AttackActor, DefenseActor, DamageEvent
 from dataclasses import asdict, fields
 import json
 import argparse
-from csv import DictWriter
+from enum import StrEnum
+
+class SimPlanMainArgs(StrEnum):
+    NEW_FILENAME = "new_filename"
+    PLAN_FILENAME = "plan_filename"
+    OUTPUT_FILENAME = "output_filename"
+    REPEAT = "repeat"
 
 
 if __name__ == '__main__':
@@ -21,28 +27,20 @@ if __name__ == '__main__':
     run_command.add_argument('-o', '--output_filename', default='sim_output.csv', help='The output file')
     run_command.add_argument('--repeat', default=1, type=int, help='The number of times to run the simulation')
 
-    args = parser.parse_args()
+    args = vars(parser.parse_args())
 
-    if not args.plan_filename:
-        with open(args.new_filename, 'w') as f:
-            plan = SimpleSimulationPlan(
-                "Simple_Simulation_Plan_Name",
-                "Simple_Simulation_Plan_Description",
-                AttackActor(),
-                DefenseActor(),
-                DamageEvent(
-                    "Damage_Name"
-                )
-            )
+    if SimPlanMainArgs.PLAN_FILENAME not in args:
+        with open(args[SimPlanMainArgs.NEW_FILENAME], 'w') as f:
+            plan = SimpleSimulationPlan.get_template()
             plan_dict = asdict(plan)
             json.dump(plan_dict, f, indent=4)
     else:
-        with open(args.plan_filename, 'r') as f:
+        with open(args[SimPlanMainArgs.PLAN_FILENAME], 'r') as f:
             plan = SimpleSimulationPlan.from_json(json.load(f))
-            runner = SimpleCombatAttackSimulationRunner(plan, args.repeat)
+            runner = SimpleCombatAttackSimulationRunner(plan, args[SimPlanMainArgs.REPEAT])
             runner.run_plan()
 
-        with open(args.output_filename, 'w', newline='') as f:
+        with open(args[SimPlanMainArgs.OUTPUT_FILENAME], 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=[f.name for f in fields(DamageRecord)])
             writer.writeheader()
             writer.writerows([
