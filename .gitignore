@@ -1,5 +1,8 @@
-// keep csv files out of the repo
+# keep csv files out of the repo
 *.csv
+
+# keep the example test_plan.json files out of the repo
+test_plan.json
 
 # PyCharm / JetBrains specific
 .idea/
