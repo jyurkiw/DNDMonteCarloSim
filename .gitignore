@@ -1,3 +1,6 @@
+// keep csv files out of the repo
+*.csv
+
 # PyCharm / JetBrains specific
 .idea/
 *.iws
