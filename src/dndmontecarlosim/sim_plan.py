@@ -1,4 +1,6 @@
+import warnings
 from dataclasses import dataclass
+
 from dndmodels import AttackActor
 from dndmodels import DefenseActor
 from dndmodels import DamageEvent
@@ -8,20 +10,20 @@ from .constants import SimPlanConstants
 
 
 @dataclass
-class SimpleSimulationPlan(object):
+class SingleAttackerSimulationPlan(object):
     name: str
     description: str
-    attackers: list[AttackActor]
+    attacker: AttackActor
     defender: DefenseActor
     damage: DamageEvent
     rounds: int = 3
 
     @staticmethod
     def from_json(parsed_json: dict):
-        plan = SimpleSimulationPlan(
+        plan = SingleAttackerSimulationPlan(
             name=parsed_json[SimPlanConstants.NAME],
             description=parsed_json[SimPlanConstants.DESCRIPTION],
-            attackers=[AttackActor.from_json(attacker) for attacker in parsed_json[AttackerConstants.ATTACKERS]],
+            attacker=parsed_json[AttackerConstants.ATTACKER],
             defender=DefenseActor.from_json(parsed_json[DefenderConstants.DEFENDER]),
             damage=DamageEvent.from_json(parsed_json[SimPlanConstants.DAMAGE]),
             rounds=int(parsed_json[SimPlanConstants.ROUNDS]),
@@ -30,12 +32,17 @@ class SimpleSimulationPlan(object):
 
     @staticmethod
     def get_template():
-        return SimpleSimulationPlan(
+        return SingleAttackerSimulationPlan(
             SimPlanConstants.TEMPLATE_PLAN_NAME,
             SimPlanConstants.TEMPLATE_PLAN_DESCRIPTION,
-            [AttackActor()],
+            AttackActor(),
             DefenseActor(),
             DamageEvent(
                 SimPlanConstants.DAMAGE_NAME
             )
         )
+
+@warnings.deprecated("SimpleSimulationPlan is deprecated. Use SingleAttackerSimulationPlan instead")
+@dataclass
+class SimpleSimulationPlan(SingleAttackerSimulationPlan):
+    pass
