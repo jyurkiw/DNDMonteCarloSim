@@ -11,6 +11,13 @@ from .constants import SimPlanConstants
 
 @dataclass
 class SingleAttackerSimulationPlan(object):
+    """
+    Defines a simulation plan for a single attacker against a single defender.
+
+    This class encapsulates all necessary components for running a single-attacker
+    simulation, including the attacker actor, defender actor, damage event details,
+    and the number of simulation rounds.
+    """
     name: str
     description: str
     attacker: AttackActor
@@ -20,6 +27,17 @@ class SingleAttackerSimulationPlan(object):
 
     @staticmethod
     def from_json(parsed_json: dict):
+        """
+        Constructs a SingleAttackerSimulationPlan instance from a parsed JSON dictionary.
+
+        Args:
+            parsed_json: A dictionary containing the simulation plan data, keyed by
+                         constants defined in SimPlanConstants, AttackerConstants,
+                         and DefenderConstants.
+
+        Returns:
+            SingleAttackerSimulationPlan: A fully initialized simulation plan object.
+        """
         plan = SingleAttackerSimulationPlan(
             name=parsed_json[SimPlanConstants.NAME],
             description=parsed_json[SimPlanConstants.DESCRIPTION],
@@ -32,6 +50,15 @@ class SingleAttackerSimulationPlan(object):
 
     @staticmethod
     def get_template():
+        """
+        Creates a default, template instance of a SingleAttackerSimulationPlan.
+
+        This method initializes the plan with default actors and a default damage event
+        based on predefined constants.
+
+        Returns:
+            SingleAttackerSimulationPlan: A default simulation plan instance.
+        """
         return SingleAttackerSimulationPlan(
             SimPlanConstants.TEMPLATE_PLAN_NAME,
             SimPlanConstants.TEMPLATE_PLAN_DESCRIPTION,
