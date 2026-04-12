@@ -8,7 +8,8 @@ version = "0.1.0"
 description = "Monte Carlo simulation for D&D 5e"
 requires-python = ">=3.13"
 dependencies = [
-    "dndmodels @ file:///E:/Repos/DNDModels",
+    "dataclasses-json==0.6.7",
+    "numpy==2.4.4",
 ]
 
 [tool.hatch.metadata]
@@ -21,6 +22,8 @@ dev = [
     "pytest-html>=3.2",
     "black>=23.0",
     "ruff>=0.1.0",
+    "deepdiff>=9.0.0",
+    "parameterized==0.9.0",
 ]
 
 [tool.pytest.ini_options]

@@ -27,3 +27,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Project Specific
+tests/runner_output/*
+tests/test_plan_templates/*
