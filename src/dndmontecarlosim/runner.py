@@ -21,15 +21,16 @@ def run(simulation_name: str, simulation_plan: SimulationPlan) -> npt.NDArray[np
 
     if isinstance(attack, HitAttackEvent):
         attack_type = simconstants.SimulationStrings.ATTACK
-        attack_code = RollCodeFactory.get_hit_roll_code(attacker, attack)
-        damage_code = RollCodeFactory.get_hit_damage_code(attacker, attack)
     else:
         raise RunException(f"Attack {attack.name} was determined to be a {type(attack)} when HitAttackEvent was expected.")
 
     for i in range(simulation_plan.iterations):
         hit_roll = RollCodeFactory.execute_hit_roll(attacker, attack, defender)
         if hit_roll.success:
-            damage = RollCodeFactory.execute_damage_roll(attacker, attack)
+            damage = RollCodeFactory.execute_damage_roll(
+                attacker,
+                attack,
+                RollCodeFactory.is_critical_hit(attack, hit_roll.roll))
         else:
             damage = 0
 
@@ -43,6 +44,7 @@ def run(simulation_name: str, simulation_plan: SimulationPlan) -> npt.NDArray[np
         simulation_data[i][simconstants.SimulationHeaders.TOTAL.value] = hit_roll.total
         simulation_data[i][simconstants.SimulationHeaders.DC.value] = defender.armor_class
         simulation_data[i][simconstants.SimulationHeaders.ATTACK_TYPE.value] = attack_type
+        simulation_data[i][simconstants.SimulationHeaders.DAMAGE_DONE.value] = damage
 
     return simulation_data
 

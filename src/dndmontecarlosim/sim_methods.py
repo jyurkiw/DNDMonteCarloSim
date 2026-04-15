@@ -44,9 +44,14 @@ class RollCodeFactory(object):
         ])
 
     @staticmethod
-    def get_hit_damage_code(attacker: CombatantModel, attack: HitAttackEvent) -> str:
+    def is_critical_hit(attack: HitAttackEvent, attack_roll: int) -> bool:
+        """Returns True if the hit was a crit."""
+        return attack_roll in attack.crit_numbers
+
+    @staticmethod
+    def get_hit_damage_code(attacker: CombatantModel, attack: HitAttackEvent, is_crit: bool = False) -> str:
         """Get a damage code.
-        Example Code: 1d8+3+1
+        Example Code: 1d8+3+1+1
         Example Breakdown:
             1d8: longsword damage
             +3: stat bonus
@@ -57,7 +62,8 @@ class RollCodeFactory(object):
             attack.damage_code,
             RollCodeFactory.get_modifier_code(attacker.get_stat_bonus(attack.bonus_stat)),
             RollCodeFactory.get_modifier_code(attack.misc_damage_bonus),
-            RollCodeFactory.get_modifier_code(attack.enchantment_bonus)
+            RollCodeFactory.get_modifier_code(attack.enchantment_bonus),
+            f"+{attack.crit_damage_code}" if is_crit else ""
         ])
 
     @staticmethod
@@ -72,11 +78,11 @@ class RollCodeFactory(object):
         return HitRollResult(RollCodeFactory.get_success(roll.total, armor_class), roll.rolls[0].details[0], roll.total, target.armor_class)
 
     @staticmethod
-    def execute_damage_roll(attacker: CombatantModel, attack: HitAttackEvent) -> int:
+    def execute_damage_roll(attacker: CombatantModel, attack: HitAttackEvent, is_crit: bool = False) -> int:
         """Roll damage.
         For now, just return damage for weapon attacks.
         """
-        damage_code = RollCodeFactory.get_hit_damage_code(attacker, attack)
+        damage_code = RollCodeFactory.get_hit_damage_code(attacker, attack, is_crit)
         damage = Roll(damage_code).total
 
         return damage
