@@ -147,22 +147,10 @@ wheels = [
 [[package]]
 name = "dndmodels"
 version = "0.1.0"
-source = { directory = "../DNDModels" }
+source = { git = "https://github.com/jyurkiw/DNDModels.git#862b316f072079912ff75d7f795788ac67ea899f" }
 dependencies = [
     { name = "dataclasses-json" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "black", marker = "extra == 'dev'", specifier = ">=23.0" },
-    { name = "dataclasses-json", specifier = "==0.6.7" },
-    { name = "parameterized", marker = "extra == 'dev'", specifier = ">=0.9.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "pytest-html", marker = "extra == 'dev'", specifier = ">=3.2" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
-]
-provides-extras = ["dev"]
 
 [[package]]
 name = "dndmontecarlosim"
@@ -172,13 +160,14 @@ dependencies = [
     { name = "dataclasses-json" },
     { name = "dndmodels" },
     { name = "numpy" },
-    { name = "parameterized" },
+    { name = "roller" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "black" },
     { name = "deepdiff" },
+    { name = "parameterized" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-html" },
@@ -187,18 +176,22 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "black", marker = "extra == 'dev'", specifier = ">=23.0" },
     { name = "dataclasses-json", specifier = "==0.6.7" },
-    { name = "deepdiff", marker = "extra == 'dev'", specifier = ">=9.0.0" },
-    { name = "dndmodels", directory = "../DNDModels" },
+    { name = "dndmodels", git = "https://github.com/jyurkiw/DNDModels.git" },
     { name = "numpy", specifier = "==2.4.4" },
-    { name = "parameterized", specifier = "==0.9.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0" },
-    { name = "pytest-html", marker = "extra == 'dev'", specifier = ">=3.2" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
+    { name = "roller", git = "https://github.com/jyurkiw/roller.git" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "black", specifier = ">=23.0" },
+    { name = "deepdiff", specifier = ">=9.0.0" },
+    { name = "parameterized", specifier = ">=0.9.0" },
+    { name = "pytest", specifier = ">=7.0" },
+    { name = "pytest-cov", specifier = ">=4.0" },
+    { name = "pytest-html", specifier = ">=3.2" },
+    { name = "ruff", specifier = ">=0.1.0" },
+]
 
 [[package]]
 name = "iniconfig"
@@ -486,6 +479,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/39/2a/cbbf9250020a4a8dd53ba83a46c097b69e5eb49dd14e708f496f548c6612/pytokens-0.4.1-cp314-cp314t-win_amd64.whl", hash = "sha256:584c80c24b078eec1e227079d56dc22ff755e0ba8654d8383b2c549107528918", size = 116287, upload-time = "2026-01-30T01:03:30.912Z" },
     { url = "https://files.pythonhosted.org/packages/c6/78/397db326746f0a342855b81216ae1f0a32965deccfd7c830a2dbc66d2483/pytokens-0.4.1-py3-none-any.whl", hash = "sha256:26cef14744a8385f35d0e095dc8b3a7583f6c953c2e3d269c7f82484bf5ad2de", size = 13729, upload-time = "2026-01-30T01:03:45.029Z" },
 ]
+
+[[package]]
+name = "roller"
+version = "0.1.0"
+source = { git = "https://github.com/jyurkiw/roller.git#911d79f56a374566951b3ed95915fa3e58bc29ba" }
 
 [[package]]
 name = "ruff"

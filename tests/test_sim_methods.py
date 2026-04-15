@@ -1,9 +1,9 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from parameterized import parameterized
 
-from src.dndmontecarlosim.sim_methods import RollCodeFactory
-from src.dndmontecarlosim.sim_methods import HitRollResult
+from dndmontecarlosim.sim_methods import RollCodeFactory
+from dndmontecarlosim.sim_methods import HitRollResult
 from dndmodels.CombatantModel import CombatantModel, HitAttackEvent
 
 from roller import RollEntry
@@ -88,10 +88,24 @@ class TestRollCodeFactoryStrMethods(unittest.TestCase):
 
     # execute_hit_roll tests
     @parameterized.expand([
+        # (attacker, defender, expected_result, mock_total, mock_d20_face)
+        (get_attacker(), get_defender(), HitRollResult(False,  4, 12, 14), 12, 4),  # clear miss
+        (get_attacker(), get_defender(), HitRollResult(True,  16, 24, 14), 24, 16),  # clear hit
+        (get_attacker(), get_defender(), HitRollResult(True,   8, 16, 14), 16,  8),  # hit above AC
+        (get_attacker(), get_defender(), HitRollResult(True,  20, 28, 14), 28, 20),  # max roll
     ])
-    def test_execute_hit_roll(self, attacker, defender, expected):
-        actual = RollCodeFactory.execute_hit_roll(attacker, attacker.attacks[0], defender)
-        self.assertEqual(actual, expected)
+    def test_execute_hit_roll(self, attacker, defender, expected_result, mock_total, mock_d20_face):
+        mock_entry = MagicMock()
+        mock_entry.details = [mock_d20_face]
+
+        mock_roll_instance = MagicMock()
+        mock_roll_instance.total = mock_total
+        mock_roll_instance.rolls = [mock_entry]
+
+        with patch('dndmontecarlosim.sim_methods.Roll', return_value=mock_roll_instance):
+            actual = RollCodeFactory.execute_hit_roll(attacker, attacker.attacks[0], defender)
+
+        self.assertEqual(actual, expected_result)
 
 
 if __name__ == '__main__':
