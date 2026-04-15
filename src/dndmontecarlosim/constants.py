@@ -20,6 +20,7 @@ class SimulationData(IntEnum):
     TOTAL = 6
     DC = 7
     ATTACK_TYPE = 8
+    DAMAGE_DONE = 9
 
 class SimulationHeaders(StrEnum):
     SIMULATION_NAME = "Simulation Name"
@@ -27,12 +28,13 @@ class SimulationHeaders(StrEnum):
     DEFENDER_NAME = "Defender Name"
     ATTACK_NAME = "Attack Name"
     SUCCESS = "Success"
-    ROLL = "Roll"
-    TOTAL = "Total"
+    ROLL = "Test Roll"
+    TOTAL = "Test Total"
     DC = "DC"
     ATTACK_TYPE = "Attack Type"
+    DAMAGE_DONE = "Damage Done"
 
-simulation_field_header_datatypes = ['U50', 'U50', 'U50', 'U50', '?', 'i4', 'i4', 'i4', 'U50']
+simulation_field_header_datatypes = ['U50', 'U50', 'U50', 'U50', '?', 'i4', 'i4', 'i4', 'U50', 'i4']
 
 simulation_data_csv_schema = np.dtype([
     (header.value, ftype)
