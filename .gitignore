@@ -29,5 +29,5 @@ var/
 *.egg
 
 # Project Specific
-tests/runner_output/*
-tests/test_plan_templates/*
+tests/runner_output/
+tests/test_plan_templates/
